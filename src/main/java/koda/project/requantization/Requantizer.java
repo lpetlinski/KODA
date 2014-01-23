@@ -16,26 +16,6 @@ import org.opencv.imgproc.Imgproc;
 public class Requantizer {
 	
 	/**
-	 * Enum for colors of planes in rgb image.
-	 * 
-	 * @author £ukasz Petliñski
-	 *
-	 */
-	private enum PlatesColor {
-		Blue(0), Red(2), Green(1);
-
-		private int number;
-
-		private PlatesColor(int number) {
-			this.number = number;
-		}
-
-		public int GetValue() {
-			return this.number;
-		}
-	};
-	
-	/**
 	 * Simple requantization of given image. It changes representation from 8 bits per pixel to 6 bpp, by removing two lowest bits.
 	 * 
 	 * @param originalImageUrl Url of image to load.
@@ -57,7 +37,7 @@ public class Requantizer {
 		Mat requantizedImage = new Mat(image.rows(), image.cols(), image.type());
 		this.SimpleRequantizeColors(image, requantizedImage);
 		if(!newImageUrl.isEmpty()){
-			Highgui.imwrite("E:\\wallpaper2.jpg", requantizedImage);
+			Highgui.imwrite(newImageUrl, requantizedImage);
 		}
 	}
 	
