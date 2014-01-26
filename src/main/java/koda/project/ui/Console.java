@@ -4,14 +4,15 @@ import java.io.File;
 
 public class Console {
 
+    public static final String NEW_LINE = System.getProperty("line.separator");
     private static final String QUIT = "0";
-    private static final String NEW_LINE = System.getProperty("line.separator");
     private static java.io.Console CONSOLE;
 
     private Mode mode;
     private Type type;
     private boolean fromDirectory;
     private String dataSource;
+    private int numberOfLevels;
 
     private Console() {
         CONSOLE = System.console();
@@ -29,6 +30,8 @@ public class Console {
         console.readMode();
         console.readType();
         console.readDataSource();
+        if (console.mode.equals(Mode.levels))
+            console.readNumberOfLevels();
         return console;
     }
 
@@ -122,6 +125,20 @@ public class Console {
         } while (!read);
     }
 
+    private void readNumberOfLevels() {
+        String command;
+        boolean read = false;
+        do {
+            command = CONSOLE.readLine("Liczba poziomow rekonstrukcji:"
+                    + NEW_LINE);
+            if (!command.isEmpty()) {
+                numberOfLevels = Integer.parseInt(command);
+                read = true;
+            }
+            checkQuit(command);
+        } while (!read);
+    }
+
     public Mode getMode() {
         return mode;
     }
@@ -138,13 +155,23 @@ public class Console {
         return dataSource;
     }
 
+    public int getNumberOfLevels() {
+        return numberOfLevels;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(mode != null ? mode : "null").append(NEW_LINE)
                 .append(type != null ? type : "null").append(NEW_LINE)
                 .append(fromDirectory ? "directory" : "file").append(NEW_LINE)
-                .append(dataSource != null ? dataSource : "null");
+                .append(dataSource != null ? dataSource : "null")
+                .append(NEW_LINE)
+                .append(numberOfLevels != 0 ? numberOfLevels : "null");
         return sb.toString();
+    }
+
+    public java.io.Console getConsole() {
+        return CONSOLE;
     }
 }

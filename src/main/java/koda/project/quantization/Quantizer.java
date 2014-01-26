@@ -25,6 +25,14 @@ public interface Quantizer {
     public int[] getOptimalLevels() throws QuantizationException;
 
     /**
+     * Zwraca optymalne granice przedziałów kwantyzacji
+     * 
+     * @return
+     * @throws QuantizationException
+     */
+    public int[] getOptimalBoundaries() throws QuantizationException;
+
+    /**
      * Zwraca dane poddane kwantyzacji
      * 
      * @return

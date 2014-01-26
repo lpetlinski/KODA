@@ -68,6 +68,31 @@ public class UniformQuantizer implements Quantizer {
     }
 
     @Override
+    public int[] getOptimalBoundaries() throws QuantizationException {
+        validate();
+
+        // tablica z granicami
+        int[] result = new int[m + 1];
+
+        // obliczam minimum i maksimum wartości danych
+        MinMaxLocResult minMax = Core.minMaxLoc(data);
+        double min = minMax.minVal;
+        double max = minMax.maxVal;
+
+        // długość przedziału
+        double distance = (max - min) / m;
+
+        // wartość pierwszej granicy
+        double start = min;
+
+        // wartości kolejnych granic
+        for (int i = 0; i < result.length; ++i)
+            result[i] = (int) (distance * i + start);
+
+        return result;
+    }
+
+    @Override
     public Mat getQuantizedData() throws QuantizationException {
         validate();
 
