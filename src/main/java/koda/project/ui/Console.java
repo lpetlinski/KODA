@@ -30,8 +30,7 @@ public class Console {
         console.readMode();
         console.readType();
         console.readDataSource();
-        if (console.mode.equals(Mode.levels))
-            console.readNumberOfLevels();
+        console.readNumberOfLevels();
         return console;
     }
 

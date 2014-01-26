@@ -10,7 +10,8 @@ import org.apache.log4j.Logger;
 import org.opencv.core.Core;
 
 public class Application {
-    
+
+    public static int ORIGINAL_LEVELS = 256;
     public static java.io.Console CONSOLE;
 
     static {
@@ -39,15 +40,15 @@ public class Application {
 
                 if (info.getType().equals(Type.requantizationReduction))
                     Requantization.performReduction(info.getDataSource(),
-                            info.getFromDirectory());
+                            info.getFromDirectory(), info.getNumberOfLevels());
 
                 else if (info.getType().equals(Type.requantizationLloyd))
                     Requantization.performLloyd(info.getDataSource(),
-                            info.getFromDirectory());
+                            info.getFromDirectory(), info.getNumberOfLevels());
 
                 else if (info.getType().equals(Type.requantizationBoth))
                     Requantization.performBoth(info.getDataSource(),
-                            info.getFromDirectory());
+                            info.getFromDirectory(), info.getNumberOfLevels());
             }
         } catch (Exception e) {
             e.printStackTrace();

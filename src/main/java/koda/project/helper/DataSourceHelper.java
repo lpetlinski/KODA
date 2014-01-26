@@ -1,10 +1,12 @@
 package koda.project.helper;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.opencv.core.Mat;
+import org.opencv.highgui.Highgui;
 
 public class DataSourceHelper {
 
@@ -14,7 +16,7 @@ public class DataSourceHelper {
     public static Mat readFromTextFile(String filePath) throws Exception {
         Mat mat = new Mat();
         List<String> lines = FileUtils.readLines(new File(filePath));
-        if(lines.isEmpty())
+        if (lines.isEmpty())
             throw new Exception("Brak danych");
         int[][] data = new int[lines.size()][];
         int colNum = -1;
@@ -29,15 +31,22 @@ public class DataSourceHelper {
                 data[i][j] = Integer.parseInt(cols[j]);
         }
         mat.create(data.length, data[0].length, OPENCV_DATA_TYPE);
-        for(int i = 0; i < data.length; ++i)
-            for(int j = 0; j < data[i].length; ++j)
+        for (int i = 0; i < data.length; ++i)
+            for (int j = 0; j < data[i].length; ++j)
                 mat.put(i, j, data[i][j]);
         return mat;
     }
 
-    public static Mat readFromImage(String filePath) {
-        Mat mat = new Mat();
+    public static List<String> getFilesPathsFromDir(String dirPath) {
+        List<String> result = new ArrayList<String>();
+        File dir = new File(dirPath);
+        for (File file : dir.listFiles())
+            if (!file.isDirectory() && file.canRead())
+                result.add(file.getAbsolutePath());
+        return result;
+    }
 
-        return mat;
+    public static Mat readFromImage(String filePath) {
+        return Highgui.imread(filePath);
     }
 }
