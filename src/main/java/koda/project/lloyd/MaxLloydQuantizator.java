@@ -7,12 +7,12 @@ package koda.project.lloyd;
  */
 public class MaxLloydQuantizator {
 	
-	int intervals;
-	double intervalLevels[];
-	double thresholds[];
-	double meanSquareErrors[];
-	double errorThreshold;
-	DiscreteProbability probability;
+	public int intervals;
+	public double intervalLevels[];
+	public double thresholds[];
+	public double meanSquareErrors[];
+	public double errorThreshold;
+	public DiscreteProbability probability;
 	
 	/**
 	 * Constructor.

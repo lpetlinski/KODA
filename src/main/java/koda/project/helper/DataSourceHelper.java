@@ -12,6 +12,7 @@ public class DataSourceHelper {
 
     private static String COLS_DELIMITER = " ";
     private static int OPENCV_DATA_TYPE = 4; // 32-bit int
+    public static String RESULTS_DIR_NAME = "results";
 
     public static Mat readFromTextFile(String filePath) throws Exception {
         Mat mat = new Mat();
@@ -43,6 +44,9 @@ public class DataSourceHelper {
         for (File file : dir.listFiles())
             if (!file.isDirectory() && file.canRead())
                 result.add(file.getAbsolutePath());
+        File resultDir = new File(dir, RESULTS_DIR_NAME);
+        if(!resultDir.exists())
+            resultDir.mkdir();
         return result;
     }
 

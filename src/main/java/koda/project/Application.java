@@ -12,6 +12,7 @@ import org.opencv.core.Core;
 public class Application {
 
     public static int ORIGINAL_LEVELS = 256;
+    public static double ERROR_THRESHOLD = 0.0001;
     public static java.io.Console CONSOLE;
 
     static {
