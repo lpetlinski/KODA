@@ -37,7 +37,7 @@ public class MaxLloydQuantizator {
 	 */
 	public double[] RunQuantization()	{
 		
-		int intervalDiff = probability.GetProbabilityLevels()/intervals;
+		double intervalDiff = probability.GetProbabilityLevels()/(double)intervals;
 		
 		for(int i=0; i<intervals; i++){
 			intervalLevels[i] = intervalDiff*i + intervalDiff/2;
