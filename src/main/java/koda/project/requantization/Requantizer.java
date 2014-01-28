@@ -14,6 +14,19 @@ import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 
 public class Requantizer {
+    
+    private int levels;
+    private int bitsToShift;
+    
+    public Requantizer(int levels){
+        this.levels = levels;
+        bitsToShift = 8 - (int) (Math.log(levels) / Math.log(2));
+    }
+    
+    public Requantizer(){
+        // domyslnie
+        this(64);
+    }
 	
 	/**
 	 * Simple requantization of given image. It changes representation from 8 bits per pixel to 6 bpp, by removing two lowest bits.
@@ -52,9 +65,9 @@ public class Requantizer {
 		for(int i=0; i<original.rows(); i++){
 			for(int j = 0; j<original.cols(); j++){
 				double[] pixel = original.get(i,j);
-				double newFirstpixel = (((int)pixel[0]) >> 2 << 2);
-				double newSecondpixel = (((int)pixel[1]) >> 2 << 2);
-				double newThirdpixel = (((int)pixel[2]) >> 2 << 2);
+				double newFirstpixel = (((int)pixel[0]) >> bitsToShift << bitsToShift);
+				double newSecondpixel = (((int)pixel[1]) >> bitsToShift << bitsToShift);
+				double newThirdpixel = (((int)pixel[2]) >> bitsToShift << bitsToShift);
 				newOne.put(i, j, newFirstpixel, newSecondpixel, newThirdpixel);
 			}
 		}
@@ -105,12 +118,13 @@ public class Requantizer {
 	 * @param redQuantizationLevels Optimal quantization levels for red color.
 	 */
 	private void RequantizeColors(Mat original, Mat newOne, double[] blueQuantizationLevels, double[] greenQuantizationLevels, double[] redQuantizationLevels){
-		for(int i=0; i<original.rows(); i++){
+		double mult = 256./levels;
+	    for(int i=0; i<original.rows(); i++){
 			for(int j = 0; j<original.cols(); j++){
 				double[] pixel = original.get(i, j);
-				double newBlue = this.GetCorrespondingLevel(pixel[PlatesColor.Blue.GetValue()], blueQuantizationLevels)*4;
-				double newGreen = this.GetCorrespondingLevel(pixel[PlatesColor.Green.GetValue()], greenQuantizationLevels)*4;
-				double newRed = this.GetCorrespondingLevel(pixel[PlatesColor.Red.GetValue()], redQuantizationLevels)*4;
+				double newBlue = this.GetCorrespondingLevel(pixel[PlatesColor.Blue.GetValue()], blueQuantizationLevels)*mult;
+				double newGreen = this.GetCorrespondingLevel(pixel[PlatesColor.Green.GetValue()], greenQuantizationLevels)*mult;
+				double newRed = this.GetCorrespondingLevel(pixel[PlatesColor.Red.GetValue()], redQuantizationLevels)*mult;
 				newOne.put(i, j, newBlue, newGreen, newRed);
 			}
 		}
@@ -191,7 +205,7 @@ public class Requantizer {
 		};
 
 		MaxLloydQuantizator quantizator = new MaxLloydQuantizator(probability,
-				64, 0.0000000000000001);
+		        levels, 0.0000000000000001);
 		return quantizator.RunQuantization();
 	}
 
