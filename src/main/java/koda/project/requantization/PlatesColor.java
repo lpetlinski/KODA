@@ -3,7 +3,7 @@ package koda.project.requantization;
 /**
  * Enum for colors of planes in rgb image.
  * 
- * @author £ukasz Petliñski
+ * @author ï¿½ukasz Petliï¿½ski
  *
  */
 public enum PlatesColor {
@@ -15,7 +15,7 @@ public enum PlatesColor {
 		this.number = number;
 	}
 
-	public int GetValue() {
+	public int getValue() {
 		return this.number;
 	}
 };

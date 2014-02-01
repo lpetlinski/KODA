@@ -11,22 +11,22 @@ public class RequantizationTest {
 	public static void main(String[] args) {
 
 		Requantizer r = new Requantizer();
-		r.Requantize("e:\\flag.jpg", "e:\\flag1.jpg");
-		r.SimpleRequantize("e:\\flag.jpg", "e:\\flag2.jpg");
+		r.requantize("e:\\flag.jpg", "e:\\flag1.jpg");
+		r.simpleRequantize("e:\\flag.jpg", "e:\\flag2.jpg");
 		
 		MeanSquareComputing mse = new MeanSquareComputing();
 		
 		System.out.println("MSE ALGORITHM");
-		double[] result = mse.ComputeMeanSquareError("e:\\flag.jpg", "e:\\flag1.jpg");
-		System.out.println("RED: " + result[PlatesColor.Red.GetValue()]);
-		System.out.println("GREEN: " + result[PlatesColor.Green.GetValue()]);
-		System.out.println("BLUE: " + result[PlatesColor.Blue.GetValue()]);
+		double[] result = mse.computeMeanSquareError("e:\\flag.jpg", "e:\\flag1.jpg");
+		System.out.println("RED: " + result[PlatesColor.Red.getValue()]);
+		System.out.println("GREEN: " + result[PlatesColor.Green.getValue()]);
+		System.out.println("BLUE: " + result[PlatesColor.Blue.getValue()]);
 		
 		System.out.println("MSE SIMPLE");
-		result = mse.ComputeMeanSquareError("e:\\flag.jpg", "e:\\flag2.jpg");
-		System.out.println("RED: " + result[PlatesColor.Red.GetValue()]);
-		System.out.println("GREEN: " + result[PlatesColor.Green.GetValue()]);
-		System.out.println("BLUE: " + result[PlatesColor.Blue.GetValue()]);
+		result = mse.computeMeanSquareError("e:\\flag.jpg", "e:\\flag2.jpg");
+		System.out.println("RED: " + result[PlatesColor.Red.getValue()]);
+		System.out.println("GREEN: " + result[PlatesColor.Green.getValue()]);
+		System.out.println("BLUE: " + result[PlatesColor.Blue.getValue()]);
 		
 		System.out.println("Done");
 	}

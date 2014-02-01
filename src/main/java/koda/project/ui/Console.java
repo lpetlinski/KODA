@@ -56,25 +56,7 @@ public class Console {
     private void readType() {
         String command;
         boolean read = false;
-        if (mode.equals(Mode.levels))
-            do {
-                command = CONSOLE.readLine("Rozklad zrodla danych:" + NEW_LINE
-                        + "1 - rownomierny" + NEW_LINE + "2 - normalny"
-                        + NEW_LINE + "3 - Laplace'a" + NEW_LINE + "0 - wyjscie"
-                        + NEW_LINE);
-                if (command.contains("1")) {
-                    type = Type.levelsUniform;
-                    read = true;
-                } else if (command.contains("2")) {
-                    type = Type.levelsNormal;
-                    read = true;
-                } else if (command.contains("3")) {
-                    type = Type.levelsLaplace;
-                    read = true;
-                }
-                checkQuit(command);
-            } while (!read);
-        else {
+        if (mode.equals(Mode.requantization))
             do {
                 command = CONSOLE.readLine("Algorytm:" + NEW_LINE
                         + "1 - Lloyda-Maxa" + NEW_LINE
@@ -93,7 +75,25 @@ public class Console {
                 }
                 checkQuit(command);
             } while (!read);
-        }
+        /*else {
+            do {
+                command = CONSOLE.readLine("Rozklad zrodla danych:" + NEW_LINE
+                        + "1 - rownomierny" + NEW_LINE + "2 - normalny"
+                        + NEW_LINE + "3 - Laplace'a" + NEW_LINE + "0 - wyjscie"
+                        + NEW_LINE);
+                if (command.contains("1")) {
+                    type = Type.levelsUniform;
+                    read = true;
+                } else if (command.contains("2")) {
+                    type = Type.levelsNormal;
+                    read = true;
+                } else if (command.contains("3")) {
+                    type = Type.levelsLaplace;
+                    read = true;
+                }
+                checkQuit(command);
+            } while (!read);
+        }*/
     }
 
     private void readDataSource() {
@@ -128,7 +128,7 @@ public class Console {
         String command;
         boolean read = false;
         do {
-            command = CONSOLE.readLine("Liczba poziomow rekonstrukcji:"
+            command = CONSOLE.readLine("Liczba poziomow kwantyzacji:"
                     + NEW_LINE);
             if (!command.isEmpty()) {
                 numberOfLevels = Integer.parseInt(command);

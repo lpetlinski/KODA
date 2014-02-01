@@ -40,9 +40,9 @@ public class MaxLloydQuantizator {
      * 
      * @return Thresholds of optimal quantization.
      */
-    public double[] RunQuantization() {
+    public double[] runQuantization() {
 
-        double intervalDiff = probability.GetProbabilityLevels()
+        double intervalDiff = probability.getProbabilityLevels()
                 / (double) intervals;
 
         for (int i = 0; i < intervals; i++) {
@@ -50,17 +50,17 @@ public class MaxLloydQuantizator {
         }
 
         this.thresholds[0] = 0;
-        this.thresholds[intervals] = this.probability.GetProbabilityLevels() - 1;
+        this.thresholds[intervals] = this.probability.getProbabilityLevels() - 1;
 
         double lastMeanSquareError;
         double actualMeanSquareError = Double.MAX_VALUE;
         do {
             lastMeanSquareError = actualMeanSquareError;
-            this.ComputeThresholds();
+            this.computeThresholds();
 
-            this.ComputeIntervals();
+            this.computeIntervals();
 
-            actualMeanSquareError = this.ComputeMeanSquareErrors();
+            actualMeanSquareError = this.computeMeanSquareErrors();
 
         } while ((lastMeanSquareError - actualMeanSquareError)
                 / actualMeanSquareError > errorThreshold);
@@ -73,13 +73,13 @@ public class MaxLloydQuantizator {
      * 
      * @return Sum of all mean square errors.
      */
-    private double ComputeMeanSquareErrors() {
+    private double computeMeanSquareErrors() {
         double result = 0;
         for (int i = 0; i < this.intervals; i++) {
             double tmp = 0;
             for (int j = (int) this.thresholds[i]; j < (int) this.thresholds[i + 1]; j++) {
                 tmp += Math.pow((double) j - this.intervalLevels[i], 2)
-                        * this.probability.GetProbability(j);
+                        * this.probability.getProbability(j);
             }
             this.meanSquareErrors[i] = tmp;
             result += tmp;
@@ -90,13 +90,13 @@ public class MaxLloydQuantizator {
     /**
      * Computes interval levels.
      */
-    private void ComputeIntervals() {
+    private void computeIntervals() {
         for (int i = 0; i < this.intervals; i++) {
             double upper = 0;
             double lower = 0;
             for (int j = (int) this.thresholds[i]; j < (int) this.thresholds[i + 1]; j++) {
-                upper += j * this.probability.GetProbability(j);
-                lower += this.probability.GetProbability(j);
+                upper += j * this.probability.getProbability(j);
+                lower += this.probability.getProbability(j);
             }
             this.intervalLevels[i] = upper / lower;
         }
@@ -105,7 +105,7 @@ public class MaxLloydQuantizator {
     /**
      * Computes thresholds.
      */
-    private void ComputeThresholds() {
+    private void computeThresholds() {
         for (int i = 1; i < this.intervals; i++) {
             this.thresholds[i] = (this.intervalLevels[i] + this.intervalLevels[i - 1]) / 2;
         }

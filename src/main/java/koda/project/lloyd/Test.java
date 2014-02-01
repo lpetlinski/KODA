@@ -14,18 +14,18 @@ public class Test {
 		DiscreteProbability prob = new DiscreteProbability() {
 			
 			@Override
-			public int GetProbabilityLevels() {
+			public int getProbabilityLevels() {
 				return levels;
 			}
 			
 			@Override
-			public double GetProbability(int level) {
+			public double getProbability(int level) {
 				return pdf[level];
 			}
 		};
 		
 		MaxLloydQuantizator a = new MaxLloydQuantizator(prob, 8, 0.0001);
-		double[] result = a.RunQuantization();
+		double[] result = a.runQuantization();
 		for(int i=0; i<result.length; i++){
 			System.out.println(result[i]);
 		}

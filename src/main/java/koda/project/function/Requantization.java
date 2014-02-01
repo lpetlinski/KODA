@@ -48,11 +48,11 @@ public class Requantization {
         List<String> filesPaths = getFilesToProcess(dataSource, isDir);
         for (String filePath : filesPaths) {
             String newFileName = createNewName(filePath, levels, "_simple");
-            r.SimpleRequantize(filePath, newFileName);
-            double[] result = mse.ComputeMeanSquareError(filePath, newFileName);
-            double meanError = (result[PlatesColor.Red.GetValue()]
-                    + result[PlatesColor.Green.GetValue()] + result[PlatesColor.Blue
-                    .GetValue()]) / 3;
+            r.simpleRequantize(filePath, newFileName);
+            double[] result = mse.computeMeanSquareError(filePath, newFileName);
+            double meanError = (result[PlatesColor.Red.getValue()]
+                    + result[PlatesColor.Green.getValue()] + result[PlatesColor.Blue
+                    .getValue()]) / 3;
             Application.CONSOLE.printf(
                     "[simple] Błąd średniokwadratowy: %.2f (%s)"
                             + koda.project.ui.Console.NEW_LINE, meanError,
@@ -67,11 +67,11 @@ public class Requantization {
         List<String> filesPaths = getFilesToProcess(dataSource, isDir);
         for (String filePath : filesPaths) {
             String newFileName = createNewName(filePath, levels, "_lloyd");
-            r.Requantize(filePath, newFileName);
-            double[] result = mse.ComputeMeanSquareError(filePath, newFileName);
-            double meanError = (result[PlatesColor.Red.GetValue()]
-                    + result[PlatesColor.Green.GetValue()] + result[PlatesColor.Blue
-                    .GetValue()]) / 3;
+            r.requantize(filePath, newFileName);
+            double[] result = mse.computeMeanSquareError(filePath, newFileName);
+            double meanError = (result[PlatesColor.Red.getValue()]
+                    + result[PlatesColor.Green.getValue()] + result[PlatesColor.Blue
+                    .getValue()]) / 3;
             Application.CONSOLE.printf(
                     "[LloydMax] Błąd średniokwadratowy: %.2f (%s)"
                             + koda.project.ui.Console.NEW_LINE, meanError,
