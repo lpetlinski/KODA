@@ -18,28 +18,28 @@ public class LevelsCalculation {
                 + Console.NEW_LINE + "[");
         StringBuilder bounds = new StringBuilder();
         for (double b : boundaries)
-            bounds.append((int)b).append(", ");
+            bounds.append((int) b).append(", ");
         out.printf(bounds.substring(0, bounds.length() - 2) + "]"
                 + Console.NEW_LINE);
 
         out.printf("Optymalne poziomy rekonstrukcji danych:" + Console.NEW_LINE);
         StringBuilder lvls = new StringBuilder();
         for (double l : levels)
-            lvls.append((int)l).append(", ");
+            lvls.append((int) l).append(", ");
         out.printf(lvls.substring(0, lvls.length() - 2) + Console.NEW_LINE);
         out.printf("Błąd średniokwadratowy: %.2f" + Console.NEW_LINE,
                 meanSquareError);
     }
 
-    private static DiscreteProbability createProbability(Double[] data) {
+    private static DiscreteProbability createProbability(Integer[] data) {
         double max = Double.MIN_VALUE;
-        for (Double a : data)
+        for (Integer a : data)
             if (a > max)
                 max = a;
-        final double[] pdf = new double[(int)max + 1];
+        final double[] pdf = new double[(int) max + 1];
         double step = 1. / data.length;
-        for (Double a : data)
-            pdf[a.intValue()] += step;
+        for (Integer a : data)
+            pdf[a] += step;
 
         DiscreteProbability probability = new DiscreteProbability() {
 
@@ -56,10 +56,11 @@ public class LevelsCalculation {
         return probability;
     }
 
-    private static double computeError(Double[] data, double[] levels) {
+    private static double computeError(Integer[] data, double[] levels) {
         double error = 0.;
-        for (Double value : data) {
-            double newValue = (int)levels[Requantizer.getCorrespondingLevel(value, levels)];
+        for (Integer value : data) {
+            double newValue = (int) levels[Requantizer.getCorrespondingLevel(
+                    value, levels)];
             error += Math.pow(newValue - value, 2);
         }
         return error / data.length;
@@ -67,12 +68,12 @@ public class LevelsCalculation {
 
     public static void calculate(String dataSource, int numOfLevels)
             throws Exception {
-        Double[] data = DataSourceHelper.readFromTextFile(dataSource);
+        Integer[] data = DataSourceHelper.readFromTextFile(dataSource);
         MaxLloydQuantizator quantizator = new MaxLloydQuantizator(
                 createProbability(data), numOfLevels,
                 Application.ERROR_THRESHOLD);
         double[] levels = quantizator.runQuantization();
-        printBoundariesAndLevels(quantizator.thresholds, levels,
+        printBoundariesAndLevels(levels, quantizator.intervalLevels,
                 computeError(data, levels));
     }
 }

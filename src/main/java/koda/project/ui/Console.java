@@ -20,7 +20,7 @@ public class Console {
     }
 
     private void checkQuit(String text) {
-        boolean isQuit = text.contains(QUIT);
+        boolean isQuit = text.trim().equals(QUIT);
         if (isQuit)
             System.exit(0);
     }

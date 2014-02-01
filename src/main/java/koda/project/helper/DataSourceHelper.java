@@ -14,17 +14,17 @@ public class DataSourceHelper {
     private static String COLS_DELIMITER = " ";
     public static String RESULTS_DIR_NAME = "results";
 
-    public static Double[] readFromTextFile(String filePath) throws Exception {
+    public static Integer[] readFromTextFile(String filePath) throws Exception {
         List<String> lines = FileUtils.readLines(new File(filePath));
         if (lines.isEmpty())
             throw new Exception("Brak danych");
-        Vector<Double> data = new Vector<Double>();
+        Vector<Integer> data = new Vector<Integer>();
         for (String line : lines) {
             String[] cols = line.split(COLS_DELIMITER);
             for (int j = 0; j < cols.length; ++j)
-                data.add(Double.parseDouble(cols[j]));
+                data.add(Integer.parseInt(cols[j]));
         }
-        return data.toArray(new Double[data.size()]);
+        return data.toArray(new Integer[data.size()]);
     }
 
     public static List<String> getFilesPathsFromDir(String dirPath) {
