@@ -1,7 +1,5 @@
 package koda.project.function;
 
-import java.text.DecimalFormat;
-
 import koda.project.Application;
 import koda.project.helper.DataSourceHelper;
 import koda.project.lloyd.DiscreteProbability;
@@ -13,7 +11,6 @@ public class LevelsCalculation {
 
     private static void printBoundariesAndLevels(double[] boundaries,
             double[] levels, double meanSquareError) {
-        DecimalFormat df = new DecimalFormat("#.##");
         if (boundaries.length == 0 || levels.length == 0)
             return;
         java.io.Console out = Application.CONSOLE;
@@ -21,14 +18,14 @@ public class LevelsCalculation {
                 + Console.NEW_LINE + "[");
         StringBuilder bounds = new StringBuilder();
         for (double b : boundaries)
-            bounds.append(df.format(b)).append(", ");
+            bounds.append((int)b).append(", ");
         out.printf(bounds.substring(0, bounds.length() - 2) + "]"
                 + Console.NEW_LINE);
 
         out.printf("Optymalne poziomy rekonstrukcji danych:" + Console.NEW_LINE);
         StringBuilder lvls = new StringBuilder();
         for (double l : levels)
-            lvls.append(df.format(l)).append(", ");
+            lvls.append((int)l).append(", ");
         out.printf(lvls.substring(0, lvls.length() - 2) + Console.NEW_LINE);
         out.printf("Błąd średniokwadratowy: %.2f" + Console.NEW_LINE,
                 meanSquareError);
@@ -62,7 +59,7 @@ public class LevelsCalculation {
     private static double computeError(Double[] data, double[] levels) {
         double error = 0.;
         for (Double value : data) {
-            double newValue = levels[Requantizer.getCorrespondingLevel(value, levels)];
+            double newValue = (int)levels[Requantizer.getCorrespondingLevel(value, levels)];
             error += Math.pow(newValue - value, 2);
         }
         return error / data.length;
