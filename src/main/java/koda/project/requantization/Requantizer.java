@@ -3,6 +3,7 @@ package koda.project.requantization;
 import java.util.List;
 import java.util.Vector;
 
+import koda.project.Application;
 import koda.project.lloyd.DiscreteProbability;
 import koda.project.lloyd.MaxLloydQuantizator;
 
@@ -33,8 +34,8 @@ public class Requantizer {
 	 * 
 	 * @param originalImageUrl Url of image to load.
 	 */
-	public void SimpleRequantize(String originalImageUrl){
-		this.SimpleRequantize(originalImageUrl, "");
+	public void simpleRequantize(String originalImageUrl){
+		this.simpleRequantize(originalImageUrl, "");
 	}
 	
 	/**
@@ -44,11 +45,11 @@ public class Requantizer {
 	 * @param originalImageUrl Url of image to load.
 	 * @param newImageUrl Url of image to save requantized image.
 	 */
-	public void SimpleRequantize(String originalImageUrl, String newImageUrl){
+	public void simpleRequantize(String originalImageUrl, String newImageUrl){
 		Mat image = Highgui.imread(originalImageUrl, Highgui.CV_LOAD_IMAGE_COLOR);
 		
 		Mat requantizedImage = new Mat(image.rows(), image.cols(), image.type());
-		this.SimpleRequantizeColors(image, requantizedImage);
+		this.simpleRequantizeColors(image, requantizedImage);
 		if(!newImageUrl.isEmpty()){
 			Highgui.imwrite(newImageUrl, requantizedImage);
 		}
@@ -61,7 +62,7 @@ public class Requantizer {
 	 * @param original Original mat of pixels to change representation.
 	 * @param newOne Mat of pixels with new representations of pixels.
 	 */
-	private void SimpleRequantizeColors(Mat original, Mat newOne){
+	private void simpleRequantizeColors(Mat original, Mat newOne){
 		for(int i=0; i<original.rows(); i++){
 			for(int j = 0; j<original.cols(); j++){
 				double[] pixel = original.get(i,j);
@@ -78,8 +79,8 @@ public class Requantizer {
 	 * 
 	 * @param originalImageUrl Url of image to load.
 	 */
-	public void Requantize(String originalImageUrl){
-		this.Requantize(originalImageUrl, "");
+	public void requantize(String originalImageUrl){
+		this.requantize(originalImageUrl, "");
 	}
 	
 	/**
@@ -89,20 +90,20 @@ public class Requantizer {
 	 * @param originalImageUrl Url of image to load.
 	 * @param newImageUrl Url of image to save requantized image.
 	 */
-	public void Requantize(String originalImageUrl, String newImageUrl) {
+	public void requantize(String originalImageUrl, String newImageUrl) {
 		Mat image = Highgui.imread(originalImageUrl, Highgui.CV_LOAD_IMAGE_COLOR);
 		List<Mat> bgrPlates = new Vector<>();
 		Core.split(image, bgrPlates);
 
-		double[] blueResult = this.GetOptimalQuantizationLevelsForColor(PlatesColor.Blue,
+		double[] blueResult = this.getOptimalQuantizationLevelsForColor(PlatesColor.Blue,
 				bgrPlates);
-		double[] greenResult = this.GetOptimalQuantizationLevelsForColor(PlatesColor.Green,
+		double[] greenResult = this.getOptimalQuantizationLevelsForColor(PlatesColor.Green,
 				bgrPlates);
-		double[] redResult = this.GetOptimalQuantizationLevelsForColor(PlatesColor.Red,
+		double[] redResult = this.getOptimalQuantizationLevelsForColor(PlatesColor.Red,
 				bgrPlates);
 		
 		Mat requantizedImage = new Mat(image.rows(), image.cols(), image.type());
-		this.RequantizeColors(image, requantizedImage, blueResult, greenResult, redResult);
+		this.requantizeColors(image, requantizedImage, blueResult, greenResult, redResult);
 		if(!newImageUrl.isEmpty()){
 			Highgui.imwrite(newImageUrl, requantizedImage);			
 		}
@@ -117,14 +118,14 @@ public class Requantizer {
 	 * @param greenQuantizationLevels Optimal quantization levels for green color.
 	 * @param redQuantizationLevels Optimal quantization levels for red color.
 	 */
-	private void RequantizeColors(Mat original, Mat newOne, double[] blueQuantizationLevels, double[] greenQuantizationLevels, double[] redQuantizationLevels){
+	private void requantizeColors(Mat original, Mat newOne, double[] blueQuantizationLevels, double[] greenQuantizationLevels, double[] redQuantizationLevels){
 		double mult = 256./levels;
 	    for(int i=0; i<original.rows(); i++){
 			for(int j = 0; j<original.cols(); j++){
 				double[] pixel = original.get(i, j);
-				double newBlue = this.GetCorrespondingLevel(pixel[PlatesColor.Blue.GetValue()], blueQuantizationLevels)*mult;
-				double newGreen = this.GetCorrespondingLevel(pixel[PlatesColor.Green.GetValue()], greenQuantizationLevels)*mult;
-				double newRed = this.GetCorrespondingLevel(pixel[PlatesColor.Red.GetValue()], redQuantizationLevels)*mult;
+				double newBlue = this.getCorrespondingLevel(pixel[PlatesColor.Blue.getValue()], blueQuantizationLevels)*mult;
+				double newGreen = this.getCorrespondingLevel(pixel[PlatesColor.Green.getValue()], greenQuantizationLevels)*mult;
+				double newRed = this.getCorrespondingLevel(pixel[PlatesColor.Red.getValue()], redQuantizationLevels)*mult;
 				newOne.put(i, j, newBlue, newGreen, newRed);
 			}
 		}
@@ -138,7 +139,7 @@ public class Requantizer {
 	 * 
 	 * @return optimal quantization level for given value.
 	 */
-	private int GetCorrespondingLevel(double value, double[] levels){
+	public static int getCorrespondingLevel(double value, double[] levels){
 		int i = 0;
 		for(; i<levels.length; i++){
 			if(value <= levels[i+1]){
@@ -156,10 +157,10 @@ public class Requantizer {
 	 * 
 	 * @return Array of optimal quantization levels for given color.
 	 */
-	private double[] GetOptimalQuantizationLevelsForColor(PlatesColor color,
+	private double[] getOptimalQuantizationLevelsForColor(PlatesColor color,
 			List<Mat> images) {
-		double[] histogram = this.GetHistogramForColor(color, images);
-		return this.GetOptimalQuantizationLevelsForHistogram(histogram);
+		double[] histogram = this.getHistogramForColor(color, images);
+		return this.getOptimalQuantizationLevelsForHistogram(histogram);
 	}
 
 	/**
@@ -170,16 +171,16 @@ public class Requantizer {
 	 * 
 	 * @return Histogram for given color.
 	 */
-	private double[] GetHistogramForColor(PlatesColor color, List<Mat> images) {
+	private double[] getHistogramForColor(PlatesColor color, List<Mat> images) {
 		List<Mat> tmpImages = new Vector<>();
-		tmpImages.add(images.get(color.GetValue()));
+		tmpImages.add(images.get(color.getValue()));
 		MatOfInt channels = new MatOfInt(0);
 		MatOfInt histSize = new MatOfInt(256);
 		MatOfFloat ranges = new MatOfFloat(0.0f, 255.0f);
 		Mat histogram = new Mat();
 		Imgproc.calcHist(tmpImages, channels, new Mat(), histogram, histSize,
 				ranges);
-		return this.GetHistogram(histogram);
+		return this.getHistogram(histogram);
 	}
 
 	/**
@@ -189,24 +190,24 @@ public class Requantizer {
 	 * 
 	 * @return Optimal quantization levels.
 	 */
-	private double[] GetOptimalQuantizationLevelsForHistogram(double[] histogram) {
+	private double[] getOptimalQuantizationLevelsForHistogram(double[] histogram) {
 		final double[] tmphist = histogram;
 		DiscreteProbability probability = new DiscreteProbability() {
 
 			@Override
-			public int GetProbabilityLevels() {
+			public int getProbabilityLevels() {
 				return 256;
 			}
 
 			@Override
-			public double GetProbability(int level) {
+			public double getProbability(int level) {
 				return tmphist[level];
 			}
 		};
 
 		MaxLloydQuantizator quantizator = new MaxLloydQuantizator(probability,
-		        levels, 0.0000000000000001);
-		return quantizator.RunQuantization();
+		        levels, Application.ERROR_THRESHOLD);
+		return quantizator.runQuantization();
 	}
 
 	/**
@@ -216,12 +217,12 @@ public class Requantizer {
 	 * 
 	 * @return Array representation of histogram.
 	 */
-	private double[] GetHistogram(Mat matHistogram) {
+	private double[] getHistogram(Mat matHistogram) {
 		double[] result = new double[256];
 		for (int i = 0; i < 256; i++) {
 			result[i] = matHistogram.get(i, 0)[0];
 		}
-		this.ChangeHistogramToProbability(result);
+		this.changeHistogramToProbability(result);
 		return result;
 	}
 
@@ -230,7 +231,7 @@ public class Requantizer {
 	 * 
 	 * @param histogram Histogram to scale.
 	 */
-	private void ChangeHistogramToProbability(double[] histogram) {
+	private void changeHistogramToProbability(double[] histogram) {
 		double sum = 0;
 		for (int i = 0; i < 256; i++) {
 			sum += histogram[i];

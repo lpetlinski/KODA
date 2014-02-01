@@ -11,7 +11,7 @@ public interface DiscreteProbability {
 	 *  
 	 * @return Levels of discrete probability function.
 	 */
-	int GetProbabilityLevels();
+	public int getProbabilityLevels();
 	
 	/**
 	 * Returns probability of given level.
@@ -19,5 +19,5 @@ public interface DiscreteProbability {
 	 * @param Level Level to get probability for.
 	 * @return Probability of given level.
 	 */
-	double GetProbability(int level);
+	public double getProbability(int level);
 }

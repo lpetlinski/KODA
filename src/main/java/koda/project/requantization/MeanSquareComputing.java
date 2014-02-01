@@ -10,7 +10,7 @@ public class MeanSquareComputing {
 	 * @param requantizedImageUrl Url of requantized image to load
 	 * @return Mean square error for each r,g,b color component
 	 */
-	public double[] ComputeMeanSquareError(String originalImageUrl, String requantizedImageUrl) {
+	public double[] computeMeanSquareError(String originalImageUrl, String requantizedImageUrl) {
 		Mat originalImage = Highgui.imread(originalImageUrl,
 				Highgui.CV_LOAD_IMAGE_COLOR);
 		Mat requantizedImage = Highgui.imread(requantizedImageUrl,
@@ -26,8 +26,8 @@ public class MeanSquareComputing {
 		result[1] = 0;
 		result[2] = 0;
 
-		for (int x = 0; x < originalImage.cols(); x++) {
-			for (int y = 0; y < originalImage.rows(); y++) {
+		for (int x = 0; x < originalImage.cols(); ++x) {
+			for (int y = 0; y < originalImage.rows(); ++y) {
 				double[] originalPixel = originalImage.get(y, x);
 				double[] requantizedPixel = requantizedImage.get(y, x);
 				for(int i=0; i<3; i++){

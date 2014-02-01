@@ -12,7 +12,7 @@ import org.opencv.core.Core;
 public class Application {
 
     public static int ORIGINAL_LEVELS = 256;
-    public static double ERROR_THRESHOLD = 0.0001;
+    public static double ERROR_THRESHOLD = 0.0000000000000001;
     public static java.io.Console CONSOLE;
 
     static {
@@ -23,21 +23,12 @@ public class Application {
         Console info = Console.read();
         CONSOLE = info.getConsole();
         try {
-            if (info.getMode().equals(Mode.levels)) {
+            if (info.getMode().equals(Mode.levels))
 
-                if (info.getType().equals(Type.levelsUniform))
-                    LevelsCalculation.uniform(info.getDataSource(),
-                            info.getNumberOfLevels());
+                LevelsCalculation.calculate(info.getDataSource(),
+                        info.getNumberOfLevels());
 
-                else if (info.getType().equals(Type.levelsNormal))
-                    LevelsCalculation.normal(info.getDataSource(),
-                            info.getNumberOfLevels());
-
-                else if (info.getType().equals(Type.levelsLaplace))
-                    LevelsCalculation.laplace(info.getDataSource(),
-                            info.getNumberOfLevels());
-
-            } else if (info.getMode().equals(Mode.requantization)) {
+            else if (info.getMode().equals(Mode.requantization)) {
 
                 if (info.getType().equals(Type.requantizationReduction))
                     Requantization.performReduction(info.getDataSource(),
