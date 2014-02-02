@@ -6,9 +6,13 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.commons.io.FileUtils;
-import org.opencv.core.Mat;
-import org.opencv.highgui.Highgui;
 
+/**
+ * Klasa zawierająca metody pomocnicze do odczytu danych z plików
+ * 
+ * @author Edward Miedziński
+ * 
+ */
 public class DataSourceHelper {
 
     private static String COLS_DELIMITER = " ";
@@ -34,12 +38,8 @@ public class DataSourceHelper {
             if (!file.isDirectory() && file.canRead())
                 result.add(file.getAbsolutePath());
         File resultDir = new File(dir, RESULTS_DIR_NAME);
-        if(!resultDir.exists())
+        if (!resultDir.exists())
             resultDir.mkdir();
         return result;
-    }
-
-    public static Mat readFromImage(String filePath) {
-        return Highgui.imread(filePath);
     }
 }

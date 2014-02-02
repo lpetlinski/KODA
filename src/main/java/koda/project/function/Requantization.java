@@ -12,8 +12,26 @@ import koda.project.requantization.MeanSquareComputing;
 import koda.project.requantization.PlatesColor;
 import koda.project.requantization.Requantizer;
 
+/**
+ * Klasa do obsługi funkcjonalności związanej z rekwantyzacją obrazów
+ * naturalnych
+ * 
+ * @author Edward Miedziński
+ * 
+ */
 public class Requantization {
 
+    /**
+     * Tworzy nazwę nowego pliku do zapisania
+     * 
+     * @param filePath
+     *            ścieżka starego pliku
+     * @param levels
+     *            liczba poziomów
+     * @param suffix
+     *            przyrostek w nazwie
+     * @return nazwa pliku
+     */
     private static String createNewName(String filePath, int levels,
             String suffix) {
         File oldFile = new File(filePath);
@@ -24,6 +42,15 @@ public class Requantization {
                 + suffix + (extension.isEmpty() ? "" : "." + extension);
     }
 
+    /**
+     * Pobiera nazwy plików do przetworzenia
+     * 
+     * @param dataSource
+     *            nazwa pliku lub katalogu
+     * @param isDir
+     *            czy to katalog
+     * @return lista ścieżek do plików
+     */
     private static List<String> getFilesToProcess(String dataSource,
             boolean isDir) {
         List<String> filesToProcess = null;
@@ -41,6 +68,17 @@ public class Requantization {
         return filesToProcess;
     }
 
+    /**
+     * Wykonanie rekwantyzacji przez obcięcie najmniej znaczących bitów
+     * 
+     * @param dataSource
+     *            nazwa pliku
+     * @param isDir
+     *            czy jest katalogiem
+     * @param levels
+     *            liczba poziomów
+     * @throws Exception
+     */
     public static void performReduction(String dataSource, boolean isDir,
             int levels) throws Exception {
         Requantizer r = new Requantizer(levels);
@@ -60,6 +98,17 @@ public class Requantization {
         }
     }
 
+    /**
+     * Wykonanie rekwantyzacji algorytmem Lloyda Maxa
+     * 
+     * @param dataSource
+     *            nazwa pliku
+     * @param isDir
+     *            czy jest katalogiem
+     * @param levels
+     *            liczba poziomów
+     * @throws Exception
+     */
     public static void performLloyd(String dataSource, boolean isDir, int levels)
             throws Exception {
         Requantizer r = new Requantizer(levels);
@@ -79,6 +128,18 @@ public class Requantization {
         }
     }
 
+    /**
+     * Wykonanie rekwantyzacji na dwa sposoby (obcięcie bitów i algotytm Lloyda
+     * Maxa)
+     * 
+     * @param dataSource
+     *            nazwa pliku
+     * @param isDir
+     *            czy jest katalogiem
+     * @param levels
+     *            liczba poziomów
+     * @throws Exception
+     */
     public static void performBoth(String dataSource, boolean isDir, int levels)
             throws Exception {
         performReduction(dataSource, isDir, levels);

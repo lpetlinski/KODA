@@ -7,8 +7,25 @@ import koda.project.lloyd.MaxLloydQuantizator;
 import koda.project.requantization.Requantizer;
 import koda.project.ui.Console;
 
+/**
+ * Klasa do obsługi funkcjonalności związanej z obliczaniem poziomów kwantyzacji
+ * i optymalnych przedziałów
+ * 
+ * @author Edward Miedziński
+ * 
+ */
 public class LevelsCalculation {
 
+    /**
+     * Drukowanie wyników
+     * 
+     * @param boundaries
+     *            optymalne przedziały
+     * @param levels
+     *            optymalne poziomy
+     * @param meanSquareError
+     *            błąd średniokwadratowy
+     */
     private static void printBoundariesAndLevels(double[] boundaries,
             double[] levels, double meanSquareError) {
         if (boundaries.length == 0 || levels.length == 0)
@@ -31,6 +48,14 @@ public class LevelsCalculation {
                 meanSquareError);
     }
 
+    /**
+     * Tworzy obiekt klasy DiscreteProbability używany przez kwantyzator Lloyda
+     * Maxa
+     * 
+     * @param data
+     *            odczytane dane
+     * @return
+     */
     private static DiscreteProbability createProbability(Integer[] data) {
         double max = Double.MIN_VALUE;
         for (Integer a : data)
@@ -56,6 +81,15 @@ public class LevelsCalculation {
         return probability;
     }
 
+    /**
+     * Oblicza błąd średniokwadratowy
+     * 
+     * @param data
+     *            dane z pliku
+     * @param levels
+     *            poziomy rekonstrukcji
+     * @return wartość błędu
+     */
     private static double computeError(Integer[] data, double[] levels) {
         double error = 0.;
         for (Integer value : data) {
@@ -66,6 +100,15 @@ public class LevelsCalculation {
         return error / data.length;
     }
 
+    /**
+     * Obliczenie optymalnych przedziałów, poziomów i błędu
+     * 
+     * @param dataSource
+     *            nazwa pliku
+     * @param numOfLevels
+     *            liczba poziomów kwantyzacji
+     * @throws Exception
+     */
     public static void calculate(String dataSource, int numOfLevels)
             throws Exception {
         Integer[] data = DataSourceHelper.readFromTextFile(dataSource);

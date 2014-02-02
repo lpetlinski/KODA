@@ -2,6 +2,12 @@ package koda.project.ui;
 
 import java.io.File;
 
+/**
+ * Obsługa interfejsu użytkownika (wczytanie poleceń itp.)
+ * 
+ * @author Edward Miedziński
+ * 
+ */
 public class Console {
 
     public static final String NEW_LINE = System.getProperty("line.separator");
@@ -75,25 +81,15 @@ public class Console {
                 }
                 checkQuit(command);
             } while (!read);
-        /*else {
-            do {
-                command = CONSOLE.readLine("Rozklad zrodla danych:" + NEW_LINE
-                        + "1 - rownomierny" + NEW_LINE + "2 - normalny"
-                        + NEW_LINE + "3 - Laplace'a" + NEW_LINE + "0 - wyjscie"
-                        + NEW_LINE);
-                if (command.contains("1")) {
-                    type = Type.levelsUniform;
-                    read = true;
-                } else if (command.contains("2")) {
-                    type = Type.levelsNormal;
-                    read = true;
-                } else if (command.contains("3")) {
-                    type = Type.levelsLaplace;
-                    read = true;
-                }
-                checkQuit(command);
-            } while (!read);
-        }*/
+        /*
+         * else { do { command = CONSOLE.readLine("Rozklad zrodla danych:" +
+         * NEW_LINE + "1 - rownomierny" + NEW_LINE + "2 - normalny" + NEW_LINE +
+         * "3 - Laplace'a" + NEW_LINE + "0 - wyjscie" + NEW_LINE); if
+         * (command.contains("1")) { type = Type.levelsUniform; read = true; }
+         * else if (command.contains("2")) { type = Type.levelsNormal; read =
+         * true; } else if (command.contains("3")) { type = Type.levelsLaplace;
+         * read = true; } checkQuit(command); } while (!read); }
+         */
     }
 
     private void readDataSource() {
